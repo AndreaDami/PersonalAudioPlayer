@@ -3,6 +3,7 @@ package com.maialovic.personalaudioplayer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -38,8 +39,6 @@ public class Player extends Activity {
         random = false;
         repeat = false;
         btnPress = false;
-        Button play = (Button) findViewById(R.id.play);
-        play.setText("Play");
 
         TelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         TelephonyMgr.listen(new MyPhoneListener(this),  PhoneStateListener.LISTEN_CALL_STATE);
@@ -76,8 +75,6 @@ public class Player extends Activity {
 
     public synchronized void Stop(View view) {
         Button play = (Button) findViewById(R.id.play);
-        play.setText("Play");
-        play.setTextSize(16);
         brgui.Stop();
     }
 
@@ -87,20 +84,17 @@ public class Player extends Activity {
         {
             if ((!brgui.get_mpl())) {
                 brgui.Play();
-                play.setText("Pause");
+                play.setBackgroundResource(R.drawable.pause);
             }
             else
-            if  (play.getText() == "Play") {
-
+            if  (!isPlaying()) {
+                play.setBackgroundResource(R.drawable.pause);
                 brgui.resume();
-                play.setText("Pause");
-                play.setTextSize(13);
             }
-            else if (play.getText() == "Pause")
+            else if (isPlaying())
             {
+                play.setBackgroundResource(R.drawable.play);
                 brgui.pause();
-                play.setText("Play");
-                play.setTextSize(16);
             }
         }
 
@@ -109,16 +103,12 @@ public class Player extends Activity {
     public void Next(View view) {
        Player.btnPress = true;
         Button play = (Button) findViewById(R.id.play);
-        play.setText("Pause");
-        play.setTextSize(13);
        brgui.Next();
     }
 
     public void Prev(View view) {
         Player.btnPress = true;
         Button play = (Button) findViewById(R.id.play);
-        play.setText("Pause");
-        play.setTextSize(13);
         brgui.Prev();
     }
 
